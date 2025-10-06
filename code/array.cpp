@@ -8,10 +8,12 @@ class Vector
     int size;
     int capacity;
 
-    Vector(int vecCapacity)
-        :size{0},capacity{16 ? vecCapacity <= 16 : next_pow_of_2(vecCapacity)} // round up to next power of 2 if vecCapacity > 16
+    public:
+    Vector(uint64_t vecCapacity)
+        :size{0},capacity{(vecCapacity <= 16) ? 16 : next_pow_of_2(vecCapacity)} // round up to next power of 2 if vecCapacity > 16
     {
         data = new int[capacity];
+        printf("created new vector w/ size of: %lld", capacity);
     }
 
     uint64_t next_pow_of_2(uint64_t t){
@@ -28,5 +30,5 @@ class Vector
 
 int main()
 {
-
+    Vector a = Vector(17);
 }
