@@ -57,6 +57,12 @@ class Vector
             
         }
 
+        void insert(int index, int item){
+            if (vSize == vCapacity){
+                resize(2);
+            }
+        }
+
         void print(){
             for (int i = 0; i < vSize; i++){
                 cout << *(data + i) << " ";
@@ -71,7 +77,7 @@ class Vector
         }
     private:
     void resize(int new_capacity){
-        int* copied = new int[vCapacity * new_capacity];
+        new_vec = new int[vCapacity * new_capacity];
     }
     
 };
@@ -89,6 +95,7 @@ int main()
     a.push(8);
     a.print();
     
-    printf("\nvalue at index 1: %d", a.at_index(1));
+    printf("\nvalue at index 1: %d\n", a.at_index(1));
+    printf("\nvalue at index 55: %d\n", a.at_index(55));
 
 }
