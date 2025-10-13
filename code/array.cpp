@@ -76,8 +76,17 @@ class Vector
             printf("created new vector w/ size of: %lld\n", vCapacity);
         }
     private:
-    void resize(int new_capacity){
-        new_vec = new int[vCapacity * new_capacity];
+    void resize(double scalingFactor){
+        int new_capacity = static_cast<int>(scalingFactor * vCapacity);
+        int* new_vec = new int[new_capacity]; // make new vector
+
+        for (int i = 0; i < vSize; i++){
+            *(new_vec+i) = *(data+i); // copy data from old vector to new
+        }
+
+        delete data;
+        data = new_vec;
+        vCapacity = new_capacity;
     }
     
 };
