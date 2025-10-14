@@ -50,19 +50,41 @@ class Vector
             vSize++;
         }
 
-        void pop(){
-            if (vSize == (vCapacity / 4)){
-                resize(0.5);
-            }
-            
-        }
-
         void insert(int index, int item){
             if (vSize == vCapacity){
-                resize(2);
+                resize(2.0);
+            }
+
+            for (int i = vSize - 1; i >= index; i--){
+                *(data + i + 1) = *(data + i); // shift elements in x direction -> begin from x direction to the opposite direction
+            }
+
+            *(data + index) = item;
+            vSize++;
+        }
+
+        void pop(){
+            if (vSize == 0){
+                throw std::length_error("empty vector");
+            }
+            vSize--;
+            if ( (vSize / vCapacity) == 0.25 ){
+                resize(0.5);
             }
         }
 
+        void prepend(int item){
+            if (vSize == vCapacity){
+                resize(2.0);
+            }
+
+            for (int i = vSize - 1; i >= 0; i--){
+                *(data + i + 1) = *(data + i); // shift elements in x direction -> begin from x direction to the opposite direction
+            }
+
+            *data = item;
+            vSize++;
+        }
         void print(){
             for (int i = 0; i < vSize; i++){
                 cout << *(data + i) << " ";
@@ -84,7 +106,7 @@ class Vector
             *(new_vec+i) = *(data+i); // copy data from old vector to new
         }
 
-        delete data;
+        delete[] data;
         data = new_vec;
         vCapacity = new_capacity;
     }
@@ -98,13 +120,19 @@ int main()
     printf("capacity: %d\n", a.capacity());
     // printf("is empty? (1 = true, 0 = false): %d\n", a.is_empty());
     
-    a.push(5);
-    a.push(6);
-    a.push(7);
-    a.push(8);
+    a.push(1);
+    a.push(2);
+    a.push(3);
+    a.push(4);
     a.print();
     
     printf("\nvalue at index 1: %d\n", a.at_index(1));
-    printf("\nvalue at index 55: %d\n", a.at_index(55));
+    // printf("\nvalue at index 55: %d\n", a.at_index(55));
+    a.insert(1, 38);
+    a.print();
+
+    cout << "\n";
+    a.prepend(45);
+    a.print();
 
 }
