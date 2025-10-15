@@ -13,16 +13,7 @@ class Vector
     uint64_t vCapacity;
 
     public:
-        uint64_t next_pow_of_2(uint64_t t){
-            t--;
-            t |= t >> 1;
-            t |= t >> 2;
-            t |= t >> 4;
-            t |= t >> 8;
-            t |= t >> 16;
-            t++;
-        return t;
-        }
+        
         int size(){
             return vSize;
         }
@@ -67,6 +58,8 @@ class Vector
             if (vSize == 0){
                 throw std::length_error("empty vector");
             }
+
+            printf("removed value: %d\n", *(data+vSize-1));
             vSize--;
             if ( (vSize / vCapacity) == 0.25 ){
                 resize(0.5);
@@ -85,6 +78,13 @@ class Vector
             *data = item;
             vSize++;
         }
+
+        void del(int index){ // "delete" is reserved
+            for (int i = index; i <= vSize; i++){
+                *(data+i) = *(data+i+1);
+            }
+            vSize--;
+        }
         void print(){
             for (int i = 0; i < vSize; i++){
                 cout << *(data + i) << " ";
@@ -96,6 +96,22 @@ class Vector
         {
             data = new int[vCapacity];
             printf("created new vector w/ size of: %lld\n", vCapacity);
+        }
+
+        void find(int item){
+            int i = 0;
+            bool found = false;
+            while (i < vSize - 1){
+                if (*(data + i) == item){
+                    printf("value found at index %d\n", i);
+                    found = true;
+                    break;
+                }
+                i++;
+            }
+            if (!found){
+                printf("value not found\n");
+            }
         }
     private:
     void resize(double scalingFactor){
@@ -110,6 +126,16 @@ class Vector
         data = new_vec;
         vCapacity = new_capacity;
     }
+    uint64_t next_pow_of_2(uint64_t t){
+            t--;
+            t |= t >> 1;
+            t |= t >> 2;
+            t |= t >> 4;
+            t |= t >> 8;
+            t |= t >> 16;
+            t++;
+        return t;
+        }
     
 };
 
@@ -133,6 +159,24 @@ int main()
 
     cout << "\n";
     a.prepend(45);
+    printf("array after prepending element w/ value of 45: ");
     a.print();
+
+    cout << "\n";
+    a.pop();
+    printf("array after popping last value: ");
+    a.print();
+
+    cout << "\n";
+    a.del(1);
+    printf("array after deleting element at index 1: ");
+    a.print();
+
+    cout << "\n";
+    printf("finding index containing element with value 38 in array\n");
+    a.find(38);
+    printf("finding index containing element with value 68 in array\n");
+    a.find(68);
+
 
 }
