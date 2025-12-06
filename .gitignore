@@ -19,4 +19,9 @@ Thumbs.db
 # Sublime Files
 .sublime
 
-./coding interview/
+coding interview
+.github/
+.obsidian/
+.vscode/
+dsa-specialization/
+extras/
