@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdexcept>
+#include <iostream>
+
+using namespace std;
 
 class node{
     public:
@@ -93,8 +96,54 @@ class LinkedList{
     void push_back(int value){
         node* newNode = new node;
         newNode->next = nullptr;
+        newNode->data = value;
 
-        
+        node* current=head;
+
+        for (int i = 0; i < size()-1; ++i){
+            current = current->next;
+        }
+
+        current->next = newNode;
+    }
+
+    void pop_back(){
+        node* current=head;
+        node* tmp=head->next;
+
+        if (head==nullptr){
+            throw std::runtime_error("cannot remove elements when list is empty\n");
+        }
+
+        while(tmp->next != nullptr){
+            current = current->next;
+            tmp = tmp->next;
+        }
+        printf("removing value: %d\n", tmp->data);
+        current->next = nullptr;
+        delete tmp;
+
+    }
+
+    int getFrontElement(){
+        return head->data;
+    }
+
+    int getBackElement(){
+        node* current=head;
+
+        while (current != nullptr){
+            current = current->next;
+        }
+        return current->data;
+    }
+
+    void print_list(){
+        node* current=head;
+        while(current!=nullptr){
+            printf("%d ", current->data);
+            current=current->next;
+        }
     }
 };
 
@@ -107,9 +156,10 @@ int main(){
     int listSize = test.size();
     printf("there are %d data elements in the list\n", listSize);
     
-    test.push_front(5);
-    test.push_front(3);
-    test.push_front(98);
+
+    for (int i = 0; i <= 3; i++){
+        test.push_front(i);
+    }
     
     listSize = test.size();
     printf("there are %d data elements in the list\n", listSize);
@@ -118,11 +168,21 @@ int main(){
     printf("value at specified index: %d\n", v);
     
     test.pop_front();
-    // test.pop_front();
-    // test.pop_front();
-    // test.pop_front();
     v = test.value_at(0);
     printf("value at specified index: %d\n", v);
+
+    printf("current list: ");
+    test.print_list();
+
+    test.push_back(78);
+    test.push_back(4891296);
+    printf("\nnew list: ");
+    test.print_list();
+
+    printf("\nremoving rearmost element:");
+    test.pop_back();
+    printf("\nnew list: ");
+    test.print_list();
     
     
 }

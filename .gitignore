@@ -27,3 +27,5 @@ dsa-specialization/
 extras/
 
 notes/
+*.exe
+*.pdf
