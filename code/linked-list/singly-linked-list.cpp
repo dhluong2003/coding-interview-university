@@ -8,7 +8,7 @@ using namespace std;
 class node{
     public:
         int data;
-        struct node *next;
+        node *next;
 };
 
 
@@ -125,11 +125,11 @@ class LinkedList{
 
     }
 
-    int getFrontElement(){
+    int getFrontElement() const {
         return head->data;
     }
 
-    int getBackElement(){
+    int getBackElement() const {
         node* current=head;
 
         while (current != nullptr){
@@ -138,6 +138,65 @@ class LinkedList{
         return current->data;
     }
 
+    void insert(int index, int value){
+        node* current=head;
+        
+        for (int i = 0; i < index-1; i++){
+            current = current->next;
+        }
+        node* next = current->next;
+
+        node* newNode = new node;
+        newNode->data = value;
+        newNode->next = nullptr;
+
+        newNode->next = next;
+        current->next = newNode;
+    }
+
+    void erase(int index){
+        node* prev=head;
+
+        for (int i = 0; i < index-1; i++){
+            prev = prev->next;
+        }
+        node* nodeToDelete = prev->next;
+        node* aft = nodeToDelete->next;
+
+        printf("\ndeleting element %d at index %d", nodeToDelete->data, index);
+
+        nodeToDelete->next = nullptr;
+        prev->next = aft;
+
+        delete nodeToDelete;
+    }
+
+    int value_n_from_end(int n){
+        node* current=head;
+        int sz = (size()-n);
+        for (int i = 0; i < sz ; i++){
+            current = current->next;
+        }
+        return current->data;
+    }
+
+    void reverse(){ // iterative
+        node *current = head, *prev = nullptr, *nxt;
+        // int sz = size();
+        
+        while(current!=nullptr){
+            nxt = current->next;
+            current->next = prev;
+            prev = current;
+            current = nxt;
+        }
+        // return prev;
+        head = prev;
+    }
+
+    void remove_value(int val){
+        node *current = head;
+    }
     void print_list(){
         node* current=head;
         while(current!=nullptr){
@@ -184,6 +243,26 @@ int main(){
     printf("\nnew list: ");
     test.print_list();
     
+    printf("\ninserting new element: 35 at index 3");
+    test.insert(3, 35);
+    printf("\nnew list: ");
+    test.print_list();
     
+    // printf("\ndeleting element at index 3");
+    // test.erase(3);
+    // printf("\nnew list: ");
+    // test.print_list();
+    
+    printf("\nget 2nd element from end of list\n");
+    v = test.value_n_from_end(4);
+    printf("\n4th element from end of list: %d", v);
+
+    printf("\nprinting current LL: ");
+    test.print_list();
+    printf("\nreversing linked list: ");
+    test.reverse();
+    cout << "\n";
+    test.print_list();
+
 }
 // linked_list;

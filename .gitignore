@@ -29,3 +29,4 @@ extras/
 notes/
 *.exe
 *.pdf
+code/*.cpp
