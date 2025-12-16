@@ -171,6 +171,20 @@ class LinkedList{
         delete nodeToDelete;
     }
 
+    void remove_value(int val){
+        node *current = head;
+        node *prev = nullptr;
+        while (current->data != val){
+            prev = current;
+            current = current->next;
+        }
+        printf("\ncurrent values for prev & current: %d \t %d", prev->data, current->data);
+        prev->next = prev->next->next;
+        current->next = nullptr;
+
+        delete current;
+    }
+
     int value_n_from_end(int n){
         node* current=head;
         int sz = (size()-n);
@@ -194,9 +208,9 @@ class LinkedList{
         head = prev;
     }
 
-    void remove_value(int val){
-        node *current = head;
-    }
+    // void remove_value(int val){
+    //     node *current = head;
+    // }
     void print_list(){
         node* current=head;
         while(current!=nullptr){
@@ -261,6 +275,15 @@ int main(){
     test.print_list();
     printf("\nreversing linked list: ");
     test.reverse();
+    cout << "\n";
+    test.print_list();
+
+    test.insert(3, 1);
+    test.insert(test.size(), 1);
+    cout << "\n";
+    test.print_list();
+
+    test.remove_value(1);
     cout << "\n";
     test.print_list();
 
