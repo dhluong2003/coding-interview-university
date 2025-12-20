@@ -1,7 +1,9 @@
 #include "singly-linked.h"
 
-// template <class T>
-bool LinkedList::empty() const{
+namespace linked_list{
+
+template <class T>
+bool LinkedList<T>::empty() const{
     if (head==nullptr){
             return true;
         } else{
@@ -9,7 +11,8 @@ bool LinkedList::empty() const{
         }
 }
 
-int LinkedList::size() const { 
+template <class T>
+int LinkedList<T>::size() const { 
         node *current=head;
         int position=0;
         while(current){
@@ -23,7 +26,8 @@ int LinkedList::size() const {
         return position;
     }
 
-int LinkedList::value_at(int i) const {
+template <class T>
+T LinkedList<T>::value_at(int index) const {
         node* current=head;
         int sz = size();
         // int position=0;
@@ -39,7 +43,8 @@ int LinkedList::value_at(int i) const {
         return current->getData();
 }
 
-void LinkedList::push_front(int value){
+template <class T>
+void LinkedList<T>::push_front(T value){
         // create new node
         node* newNode = new node;
         newNode->setData(value);
@@ -56,8 +61,8 @@ void LinkedList::push_front(int value){
             head=newNode;
         }
     }
-
-void LinkedList::pop_front(){
+template <class T>
+void LinkedList<T>::pop_front(){
         node* temp = head;
         if (head==nullptr){
             throw std::runtime_error("cannot remove items when list is empty\n");
@@ -66,8 +71,8 @@ void LinkedList::pop_front(){
         head = head->getNext();
         delete temp;
     }
-
-void LinkedList::push_back(int value){
+template <class T>
+void LinkedList<T>::push_back(T value){
         node* newNode = new node;
         newNode->setNext(nullptr);
         newNode->setData(value);
@@ -82,8 +87,8 @@ void LinkedList::push_back(int value){
 
         current->setNext(newNode);
     }
-
-void LinkedList::pop_back(){
+template <class T>
+void LinkedList<T>::pop_back(){
         node* current=head;
         node* tmp=head->getNext();
 
@@ -101,11 +106,14 @@ void LinkedList::pop_back(){
 
     }
 
-    int LinkedList::getFrontElement() const {
+
+template <class T>
+T LinkedList<T>::getFrontElement() const {
         return head->getData();
     }
 
-    int LinkedList::getBackElement() const {
+template <class T>
+T LinkedList<T>::getBackElement() const {
         node* current=head;
 
         while (current != nullptr){
@@ -114,7 +122,8 @@ void LinkedList::pop_back(){
         return current->getData();
     }
 
-    void LinkedList::insert(int index, int value){
+template <class T>
+void LinkedList<T>::insert(int index, T value){
         node* current=head;
         
         for (int i = 0; i < index-1; i++){
@@ -130,7 +139,8 @@ void LinkedList::pop_back(){
         current->setNext(newNode);
     }
 
-    void LinkedList::erase(int index){
+template <class T>
+void LinkedList<T>::erase(int index){
         node* prev=head;
 
         for (int i = 0; i < index-1; i++){
@@ -147,7 +157,8 @@ void LinkedList::pop_back(){
         delete nodeToDelete;
     }
 
-    void LinkedList::remove_value(int val){
+template <class T>
+void LinkedList<T>::remove_value(T val){
         node *current = head;
         node *prev = nullptr;
         while (current->getData() != val){
@@ -161,7 +172,8 @@ void LinkedList::pop_back(){
         delete current;
     }
 
-    int LinkedList::value_n_from_end(int n){
+template <class T>
+T LinkedList<T>::value_n_from_end(int n) const{
         node* current=head;
         int sz = (size()-n);
         for (int i = 0; i < sz ; i++){
@@ -170,7 +182,8 @@ void LinkedList::pop_back(){
         return current->getData();
     }
 
-    void LinkedList::reverse(){ // iterative
+template <class T>
+void LinkedList<T>::reverse(){ // iterative
         node *current = head, *prev = nullptr, *nxt;
         
         while(current!=nullptr){
@@ -182,10 +195,13 @@ void LinkedList::pop_back(){
         // return prev;
         head = prev;
     }
-    void LinkedList::print_list(){
+
+template <class T>
+void LinkedList<T>::print_list(){
         node* current=head;
         while(current!=nullptr){
             printf("%d ", current->getData());
             current=current->getNext();
         }
     }
+}
