@@ -2,6 +2,18 @@
 
 namespace linked_list{
 
+
+template <class T>
+LinkedList<T>::~LinkedList(){
+    node *current = head;
+    node *next = nullptr;
+
+    while (current){
+        next = current->getNext();
+        delete current;
+        current = next;
+    }
+}
 template <class T>
 bool LinkedList<T>::empty() const{
     if (head==nullptr){
