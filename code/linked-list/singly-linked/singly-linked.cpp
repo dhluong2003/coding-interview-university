@@ -137,15 +137,22 @@ T LinkedList<T>::getBackElement() const {
 template <class T>
 void LinkedList<T>::insert(int index, T value){
         node* current=head;
+        int sz = size();
+        
+        node* newNode = new node;
+        newNode->setData(value);
+        newNode->setNext(nullptr);
+
+        if (index == 0){ // if inserting at head
+            newNode->setNext(head);
+            head = newNode;
+        }
         
         for (int i = 0; i < index-1; i++){
             current = current->getNext();
         }
         node* next = current->getNext();
 
-        node* newNode = new node;
-        newNode->setData(value);
-        newNode->setNext(nullptr);
 
         newNode->setNext(next);
         current->setNext(newNode);
