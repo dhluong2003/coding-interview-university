@@ -32,3 +32,5 @@ notes/
 code/*.cpp
 
 .vscode
+
+*.code-workspace
