@@ -43,8 +43,8 @@ T LinkedList<T>::value_at(int index) const {
         node* current=head;
         int sz = size();
         // int position=0;
-        if (i >= sz){
-            throw std::range_error("input value larger than list size, exiting\n");
+        if (i >= sz or i < 0){
+            throw std::range_error("input value outsize allowed range, exiting\n");
         }
         for (int a = 0; a < i; a++){
             if (not current){
@@ -76,6 +76,7 @@ void LinkedList<T>::push_front(T value){
 template <class T>
 void LinkedList<T>::pop_front(){
         node* temp = head;
+        int sz = size();
         if (head==nullptr){
             throw std::runtime_error("cannot remove items when list is empty\n");
         }
@@ -161,6 +162,12 @@ void LinkedList<T>::insert(int index, T value){
 template <class T>
 void LinkedList<T>::erase(int index){
         node* prev=head;
+        // int sz = size();
+
+        //if list is empty throw an exception
+        if (head == nullptr){
+            throw std::range_error("cannot delete specified index %d when list is empty", index);
+        }
 
         for (int i = 0; i < index-1; i++){
             prev = prev->getNext();
@@ -180,16 +187,21 @@ template <class T>
 void LinkedList<T>::remove_value(T val){
         node *current = head;
         node *prev = nullptr;
-        while (current->getData() != val){
-            prev = current;
-            current = current->getNext();
+        
+        while (current){                                // check if list is empty
+            if (current->getData() == val){
+                if (prev == nullptr){                   // check if removing the head
+                    head = current->getNext();
+                } else{
+                    prev->setNext(current->getNext());
+                }
+            delete current;
+            break;
+            }
+        prev = current;
+        current = current->getNext();
         }
-        printf("\ncurrent values for prev & current: %d \t %d", prev->getData(), current->getData());
-        prev->setNext(prev->getNext()->getNext());
-        current->setNext(nullptr);
-
-        delete current;
-    }
+}
 
 template <class T>
 T LinkedList<T>::value_n_from_end(int n) const{
