@@ -11,23 +11,25 @@ class LinkedList{
     private:
         class node{
             T data;
-            node<T> *next;
+            node *next;
 
         public:
-            const T getData()  {
+            node(): data(), next(nullptr){} // default constructor
+            node(const T& value, node* nextNode = nullptr): data(value), next(nextNode){}
+            const T& getData() const {
                 return data;
             }
-            node<T> *getNext() {
+            node *getNext() const {
                 return next;
             }
-            void setData(const T value){
+            void setData(const T& value){
                 data = value;
             }
-            void setNext(node<T> *node){
+            void setNext(node *node){
                 next = node;
             }
         };
-    node<T> *head;
+    node *head;
 
     public:
 
@@ -35,6 +37,10 @@ class LinkedList{
         head=nullptr;
     }
     ~LinkedList(); // destructor
+
+    LinkedList(const LinkedList &) = delete;
+    
+    LinkedList &operator=(const LinkedList&) = delete;
 
     bool empty() const; // 1 if LL empty, 0 if not
 
@@ -48,7 +54,7 @@ class LinkedList{
 
     void push_back(T value); // insert value to end of list
 
-    void pop_back(); // remove value from end of list, return removed value
+    void pop_back(); // remove value from end of list
 
     T getFrontElement() const; // get head element
 
@@ -64,8 +70,7 @@ class LinkedList{
 
     void reverse(); // reverse the list, iterative version
 
-    void print_list(); // prints the list
-
+    void print_list() const; // prints the list
 };
 }
 #endif

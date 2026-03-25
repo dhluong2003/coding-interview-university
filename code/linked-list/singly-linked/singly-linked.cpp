@@ -43,10 +43,10 @@ T LinkedList<T>::value_at(int index) const {
         node* current=head;
         int sz = size();
         // int position=0;
-        if (i >= sz or i < 0){
+        if (index >= sz or index < 0){
             throw std::range_error("input value outsize allowed range, exiting\n");
         }
-        for (int a = 0; a < i; a++){
+        for (int a = 0; a < index; a++){
             if (not current){
                 break;
             }
@@ -58,13 +58,19 @@ T LinkedList<T>::value_at(int index) const {
 template <class T>
 void LinkedList<T>::push_front(T value){
         // create new node
-        node* newNode = new node;
-        newNode->setData(value);
-        newNode->setNext(nullptr);
+        node* newNode = new node(value, nullptr);
+        // newNode->setData(value);
+        // newNode->setNext(nullptr);
 
-        // if list is empty, have the head pointer point at the new node
-        if (head==nullptr){
+        // empty list -> set head to new node
+        if (head==nullptr)
+        {
             head=newNode;
+        }
+        else if (head->getNext() == nullptr) // 1-element list
+        {
+            newNode->setNext(head);
+            head->setNext(newNode);
         }
         
         // if list is not empty, have the new node's next pointer point at the 
@@ -76,48 +82,53 @@ void LinkedList<T>::push_front(T value){
 template <class T>
 void LinkedList<T>::pop_front(){
         node* temp = head;
-        int sz = size();
+        // int sz = size();
         if (head==nullptr){
             throw std::runtime_error("cannot remove items when list is empty\n");
         }
-        printf("removing value: %d\n", temp->getData());
         head = head->getNext();
         delete temp;
     }
 template <class T>
 void LinkedList<T>::push_back(T value){
-        node* newNode = new node;
-        newNode->setNext(nullptr);
-        newNode->setData(value);
-
+        node* newNode = new node(value, nullptr);
         int sz = size() - 1;
-
         node* current=head;
 
-        for (int i = 0; i < sz; ++i){
-            current = current->getNext();
+        if(head == nullptr){
+            head = newNode;
         }
-
-        current->setNext(newNode);
+        else {
+            for (int i = 0; i < sz; ++i){
+                current = current->getNext();
+            }
+            current->setNext(newNode);
+        }
     }
 template <class T>
 void LinkedList<T>::pop_back(){
-        node* current=head;
+    if (head==nullptr){ // list is empty
+        throw std::runtime_error("cannot remove elements when list is empty\n");
+    }
+    node* current=head; // move here after we confirm head exists
+        
+    if (head->getNext() == nullptr){ // single element list
+        head = nullptr;
+        delete current;
+    }
+    
+    else
+    {
         node* tmp=head->getNext();
-
-        if (head==nullptr){
-            throw std::runtime_error("cannot remove elements when list is empty\n");
-        }
-
-        while(tmp->getNext() != nullptr){
+        while(tmp->getNext() != nullptr)
+        {
             current = current->getNext();
             tmp = tmp->getNext();
         }
-        printf("removing value: %d\n", tmp->getData());
         current->setNext(nullptr);
         delete tmp;
-
     }
+}
 
 
 template <class T>
@@ -129,7 +140,7 @@ template <class T>
 T LinkedList<T>::getBackElement() const {
         node* current=head;
 
-        while (current != nullptr){
+        while (current->getNext() != nullptr){
             current = current->getNext();
         }
         return current->getData();
@@ -139,34 +150,46 @@ template <class T>
 void LinkedList<T>::insert(int index, T value){
         node* current=head;
         int sz = size();
-        
-        node* newNode = new node;
-        newNode->setData(value);
-        newNode->setNext(nullptr);
 
+        
+        node* newNode = new node(value, nullptr);
+        if (index < 0 or index >= sz){
+            throw std::range_error("illegal index value (cannot be < 0 or larger than list size, minus 1)");
+        }
+        
         if (index == 0){ // if inserting at head
             newNode->setNext(head);
             head = newNode;
+            return;
         }
         
         for (int i = 0; i < index-1; i++){
             current = current->getNext();
         }
         node* next = current->getNext();
-
-
+        
+        
         newNode->setNext(next);
         current->setNext(newNode);
     }
-
-template <class T>
-void LinkedList<T>::erase(int index){
+    
+    template <class T>
+    void LinkedList<T>::erase(int index){
         node* prev=head;
-        // int sz = size();
+        int sz = size();
+        
+        if (index < 0 or index >= sz){
+            throw std::range_error("illegal index value (cannot be < 0 or larger than list size, minus 1)");
+        }
 
         //if list is empty throw an exception
         if (head == nullptr){
-            throw std::range_error("cannot delete specified index %d when list is empty", index);
+            throw std::range_error("cannot delete specified index when list is empty");
+        }
+        if (index == 0){ // removing head
+            head = head->getNext();
+            delete prev;
+            return;
         }
 
         for (int i = 0; i < index-1; i++){
@@ -184,7 +207,7 @@ void LinkedList<T>::erase(int index){
     }
 
 template <class T>
-void LinkedList<T>::remove_value(T val){
+void LinkedList<T>::remove_value(T val){ // at the moment silently does nothing if specified value doesn't exist
         node *current = head;
         node *prev = nullptr;
         
@@ -205,13 +228,33 @@ void LinkedList<T>::remove_value(T val){
 
 template <class T>
 T LinkedList<T>::value_n_from_end(int n) const{
-        node* current=head;
-        int sz = (size()-n);
-        for (int i = 0; i < sz ; i++){
-            current = current->getNext();
+        if (n <= 0)
+        {
+            throw std::range_error("specified index value must be a nonzero positive integer\n");
         }
-        return current->getData();
-    }
+
+        if (not head)
+        {
+            throw std::logic_error("empty linked list, nothing to show\n");
+        }
+
+        node* fwd=head;
+        // node* bck=nullptr;
+
+        // if condition before moving fwd forward or else it can error for 1-element lists and n = 1 (should return the only element)
+        for (int i = 0; i < n; i++){
+            if (fwd == nullptr){
+                throw std::range_error("specified index value is larger than list size\n");
+            }
+            fwd = fwd->getNext();
+        }
+        node* bck = head;
+        while (fwd != nullptr){
+            fwd = fwd->getNext();
+            bck = bck->getNext();
+        }
+        return bck->getData();
+}
 
 template <class T>
 void LinkedList<T>::reverse(){ // iterative
@@ -228,10 +271,10 @@ void LinkedList<T>::reverse(){ // iterative
     }
 
 template <class T>
-void LinkedList<T>::print_list(){
+void LinkedList<T>::print_list() const {
         node* current=head;
         while(current!=nullptr){
-            printf("%d ", current->getData());
+            std::cout << current->getData() << " ";
             current=current->getNext();
         }
     }
