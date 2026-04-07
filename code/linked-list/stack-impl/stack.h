@@ -26,13 +26,13 @@ class Stack{
     Node* head;
 
     public:
-        Stack(): head(nullptr){};
-        ~Stack(){};
+        Stack(): head(nullptr){}
+        ~Stack();
         Stack(const Stack &) = delete;
         Stack &operator=(const Stack &) = delete; // do not permit copying
 
         void push(T value);
-        void pop(T value);
+        void pop();
 
 };
 
