@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdexcept>
 
 #ifndef STACK_IMPL_H
 #define STACK_IMPL_H
@@ -9,24 +10,23 @@ template <class T>
 class Stack{
     private:
         class Node {
-            private:
-                T data;
-                Node *next;
+            T data;
+            Node *next;
 
-            public:
-                Node (Node *nxt, T dt): next(nxt), data(dt){}
-                Node(): next(nullptr), data(){} // default constructor
+        public:
+        Node(const T& dt, Node* nxt=nullptr): next(nxt), data(dt){}
+        Node(): data(), next(nullptr){} // default constructor
                 
-                void setNext(Node *node) { next = node; }
-                Node* getNext() const { return next; }
+        void setNext(Node *node) { next = node; }
+        Node* getNext() const { return next; }
 
-                void setData(const T& value) { data = value; }
-                const T& getData() const { return data; }
-        }
+        void setData(const T& value) { data = value; }
+        const T& getData() const { return data; }
+        };
     Node* head;
 
     public:
-        Stack(): head(nullptr){}
+        Stack(): head(nullptr){};
         ~Stack();
         Stack(const Stack &) = delete;
         Stack &operator=(const Stack &) = delete; // do not permit copying
