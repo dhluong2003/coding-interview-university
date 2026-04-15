@@ -1,4 +1,4 @@
-#include "stack.h"
+#include "./stack.h"
 #include <stdexcept>
 
 namespace stack{
@@ -16,12 +16,13 @@ namespace stack{
         Node* newNode = new Node(value, nullptr);
 
         // case: empty stack
-        if (head == nullptr) { head->setNext(newNode); }
+        if (head == nullptr) { head = newNode; }
 
         // case: stack w/ at least 1 elmt
         else if (head->getNext() == nullptr) {
-            newNode->setNext(head);
-            head->setNext(newNode);
+            Node* tmp = head;
+            head = newNode;
+            newNode->setNext(tmp);
         }
     }
 
@@ -42,8 +43,18 @@ namespace stack{
         // case: stack w/ 2 or more elmts
         else {
             Node* tmp = head;
-            head->setNext(head->next)
+            head = head->getNext();
             delete tmp;
         }
+    }
+
+    template <class T>
+    int Stack<T>::size() const{
+        Node* tmp = head;
+        int size = 0;
+
+        // empty stack -> return size 0
+        if (head == nullptr) { return size; }
+        
     }
 }

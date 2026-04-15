@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <stdexcept>
+// #include <stdio.h>
+// #include <stdexcept>
 
 #ifndef STACK_IMPL_H
 #define STACK_IMPL_H
@@ -33,6 +33,11 @@ class Stack{
 
         void push(T value);
         void pop();
+        int size() const;
+        void print() const;
+        bool isEmpty() const;
+        T getTopElement() const;
+        
 
 };
 
